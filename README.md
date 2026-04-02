@@ -1,44 +1,84 @@
 <div align="center">
-  <h1>🧠 AI-Driven SMR Rankine Cycle Optimization</h1>
-  <h3>Genetic Algorithm Optimization for NuScale SMR Cooling Systems</h3>
+  <img src="https://img.shields.io/badge/NUCLEAR_ENGINEERING-KAU-green?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/AI_OPTIMIZATION-GENETIC_ALGORITHM-orange?style=for-the-badge" />
+  <br>
+  <h1>⚛️ NuScale SMR: Intelligent Control & Optimization</h1>
+  <h3>AI-Driven Rankine Cycle Management for the VOYGR™ SMR Module</h3>
+  
+  <p align="center">
+    <img src="https://img.shields.io/badge/MATLAB-R2025b-0076A8?style=flat-square&logo=mathworks&logoColor=white" />
+    <img src="https://img.shields.io/badge/Optimization-GA_Toolbox-38B2AC?style=flat-square" />
+    <img src="https://img.shields.io/badge/UI_Design-SCADA_Dashboard-D14836?style=flat-square" />
+  </p>
 </div>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Language-MATLAB-0076A8?style=for-the-badge&logo=mathworks&logoColor=white" />
-  <img src="https://img.shields.io/badge/Algorithm-Genetic_Algorithm_(GA)-38B2AC?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Domain-Thermodynamics_%26_Systems_Engineering-D14836?style=for-the-badge" />
-</p>
+---
+
+## 📖 Project Vision
+In the extreme heat of the Arabian Gulf, nuclear power plant efficiency can drop significantly due to high seawater temperatures. This project introduces an **AI-Powered Digital Twin** for a **250 MWt NuScale SMR**. By utilizing **Genetic Algorithms (GA)**, the system dynamically balances the parasitic load of cooling pumps against turbine backpressure to maximize **Net Plant Power**.
 
 ---
 
-## 📝 Project Overview
+## 🖥️ The SCADA Dashboard (New Feature)
+The project now includes a professional, industrial-grade **Control Room Dashboard** (`PWR_Dashboard_exported.m`). 
 
-This project develops a dynamic thermodynamic simulation and an AI-driven optimization model for the secondary loop of a Small Modular Reactor (SMR), specifically conceptually modeled around NuScale operational parameters. 
-
-The primary objective is to maximize the **Net Power Output** of the plant by intelligently adjusting auxiliary loads (Pump Speed) and Moisture Separator Reheater (MSR) valve positioning based on varying environmental conditions (e.g., Seasonal Seawater Temperature).
-
-## ⚙️ Core Architecture
-
-The repository consists of two main MATLAB scripts:
-
-1. **`Plant_Physics.m` (The Digital Twin):** A robust physical model of the plant's thermodynamic cycle. It calculates the exact intersections between pump curves and system resistance, models dynamic condenser heat transfer (LMTD), and evaluates high-pressure and low-pressure turbine outputs utilizing the `XSteam` water properties library.
-2. **`Run_Optimization.m` (The AI Engine):** Deploys a **Genetic Algorithm (GA)** to explore the solution space. It strategically trades off pump power consumption against turbine efficiency drops due to higher condenser backpressure.
-
-## 🧠 Smart Cost Function & Constraints
-
-Instead of simple mathematical minimization, the GA utilizes a physics-informed cost function designed to prevent operational hazards. The algorithm minimizes the negative of the Net Power `(-W_Net)` while strictly enforcing mechanical limits via severe mathematical penalties:
-
-* **Stall Protection Penalty:** Prevents the pump speed from dropping below safe operational limits (< 50%).
-* **Turbine Trip Penalty:** Heavily penalizes the algorithm if condenser backpressure exceeds the critical threshold (0.10 bar).
-* **Environmental Penalty:** Limits the cooling water discharge temperature difference ($\Delta T$) to comply with ecological regulations.
-
-## 📊 Results & Impact
-
-By shifting from a traditional "100% fixed pump speed" operational baseline to an AI-optimized variable speed approach, the system demonstrates the ability to dynamically save **Auxiliary Power (kW to MW scale)** during favorable seasonal conditions, directly increasing the overall plant net efficiency.
+* **Real-time Interaction:** Use the high-precision slider to simulate seasonal sea temperature changes (10°C to 40°C).
+* **Intelligent Gauges:** Monitor Condenser Vacuum, Pump Load, and Net Generation via native MATLAB gauges.
+* **Safety Interlocks:** Visual "Safety Lamps" that trigger warnings if condenser pressure approaches the critical **0.10 bar** trip limit.
+* **Comparative Analytics:** Direct side-by-side comparison between "Traditional Operation" and "AI-Optimized Operation".
 
 ---
 
-### 🚀 How to Run
-1. Ensure you have MATLAB installed with the **Global Optimization Toolbox**.
-2. Download the [XSteam library](https://www.mathworks.com/matlabcentral/fileexchange/9817-x-steam-thermodynamic-properties-of-water-and-steam) and place it in the exact same directory.
-3. Run `Run_Optimization.m`.
+## ⚙️ Repository Architecture
+
+### 1. The Intelligence Core
+* **`Plant_Physics.m`:** The thermodynamic engine. Models LMTD heat transfer, pump-system curve intersections, and turbine work using the `XSteam` library.
+* **`Run_Optimization.m`:** The training script for the Genetic Algorithm to find optimal speed/valve positioning.
+
+### 2. The Professional Interface
+* **`PWR_Dashboard_exported.m`:** The standalone SCADA-style application.
+* **`/Assets`:** Contains the required visual resources, icons, and safety-informed indicators.
+
+---
+
+## 🛡️ Safety & Engineering Constraints
+The AI is strictly bounded by nuclear safety regulations:
+* **Vacuum Integrity:** Prevents Condenser pressure from exceeding **0.10 bar**.
+* **Thermal Regulation:** Limits cooling water discharge temperature ($\Delta T$) to protect marine ecosystems.
+* **Stall Prevention:** Ensures a minimum pump speed of 50% for operational stability.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+* **MATLAB R2025b** or later.
+* **Global Optimization Toolbox** (for the GA Engine).
+* **XSteam Library** (Included in the root folder).
+
+### Installation
+1.  Clone the repository:
+    ```bash
+    git clone [https://github.com/YourUsername/SMR-AI-Optimization.git](https://github.com/YourUsername/SMR-AI-Optimization.git)
+    ```
+2.  Maintain the folder structure: Ensure the `Assets` folder is in the same directory as the `.m` files.
+3.  Launch the Dashboard:
+    ```matlab
+    >> PWR_Dashboard_exported
+    ```
+
+---
+
+## 👥 Project Team
+* **Ahmed Saeed Alghamdi** - *Nuclear Engineering Lead*
+* **Faisal Saeed Bahadi** - *Thermodynamics Specialist*
+* **Ahmed Saud Alsalahi** - *Systems Integration*
+
+**Supervised By:**
+**Dr. Anas Alwafi**
+*Department of Nuclear Engineering, King Abdulaziz University (KAU)*
+
+---
+<div align="center">
+  <p>Copyright © 2026 | King Abdulaziz University | All Rights Reserved</p>
+</div>
