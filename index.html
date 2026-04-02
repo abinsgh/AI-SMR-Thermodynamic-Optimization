@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUPS - SMR Optimization Report</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --primary: #005b96;
+            --secondary: #03396c;
+            --accent: #00a86b;
+            --danger: #e63946;
+            --border: #e0e0e0;
+            --highlight: rgba(0, 168, 107, 0.1);
+            --font-main: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0b132b;
+            --card-bg: #1c2541;
+            --text: #eaf4f4;
+            --primary: #4cc9f0;
+            --secondary: #3a506b;
+            --accent: #06d6a0;
+            --danger: #ef476f;
+            --border: #2c3e50;
+            --highlight: rgba(6, 214, 160, 0.1);
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 15px;
+            background: var(--card-bg);
+            border-bottom: 3px solid var(--primary);
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        button {
+            padding: 8px 24px;
+            border-radius: 25px;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: var(--primary);
+            color: var(--card-bg);
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .story-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .story-card h2 {
+            color: white;
+            border: none;
+            margin-top: 0;
+            padding: 0;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: var(--secondary);
+            margin-top: 25px;
+        }
+
+        .equation-box {
+            background: var(--bg);
+            border-right: 4px solid var(--accent);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            overflow-x: auto;
+        }
+
+        [dir="ltr"] .equation-box {
+            border-right: none;
+            border-left: 4px solid var(--accent);
+        }
+
+        .explanation {
+            text-align: justify;
+            font-size: 0.95rem;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border);
+        }
+
+        .why-use {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th,
+        td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        [dir="rtl"] th,
+        [dir="rtl"] td {
+            text-align: right;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+        }
+
+        .results-table td {
+            font-size: 1.05rem;
+        }
+
+        .gain {
+            background: var(--highlight);
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .loss {
+            color: var(--danger);
+        }
+
+        .badge {
+            background: var(--danger);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        /* Download Buttons Style */
+        .download-section {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white !important;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-family: var(--font-main);
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            filter: brightness(1.1);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--primary);
+            font-size: 0.9rem;
+            border-top: 2px solid var(--border);
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .story-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body id="mainBody">
+
+    <nav class="navbar">
+        <button onclick="toggleTheme()">🌓 Theme</button>
+        <button id="langBtn" onclick="toggleLanguage()">🇸🇦 Arabic</button>
+    </nav>
+
+    <div class="container">
+        <div id="content-en">
+            <header>
+                <h1>NUPS: NuScale Auxiliary Power Optimization</h1>
+                <div class="subtitle">AI-Driven Rankine Cycle Management via Genetic Algorithms</div>
+                <p>Team: Ahmed Alghamdi, Faisal Bahadi, Ahmed Alsalahi | Supervisor: Dr. Anas Alwafi</p>
+            </header>
+
+            <div class="story-card">
+                <h2>Project Overview (How it Works)</h2>
+                <p>In nuclear power plants, massive pumps circulate seawater to cool the steam in the condenser.
+                    Traditionally, these pumps run at 100% speed all the time, consuming immense amounts of electricity
+                    (Parasitic Load).</p>
+                <p><strong>The Solution:</strong> We built an AI (Genetic Algorithm) that acts as a "Smart Operator". It
+                    calculates exactly how much cooling is needed based on the sea temperature. By intelligently slowing
+                    down the pumps without overheating the reactor, the plant saves Megawatts of energy, increasing the
+                    overall net electricity sent to the city.</p>
+            </div>
+
+            <section class="card">
+                <h2>1. System Constants (NuScale 250 MWt)</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Symbol</th>
+                                <th>Value</th>
+                                <th>Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Reactor Thermal Power</td>
+                                <td>\( Q_{reactor} \)</td>
+                                <td>250</td>
+                                <td>MWt</td>
+                            </tr>
+                            <tr>
+                                <td>Main Steam Pressure</td>
+                                <td>\( P_{in} \)</td>
+                                <td>60</td>
+                                <td>bar</td>
+                            </tr>
+                            <tr>
+                                <td>Main Steam Temperature</td>
+                                <td>\( T_{in} \)</td>
+                                <td>275</td>
+                                <td>°C</td>
+                            </tr>
+                            <tr>
+                                <td>Condenser Area</td>
+                                <td>\( Area \)</td>
+                                <td>4500</td>
+                                <td>m²</td>
+                            </tr>
+                            <tr>
+                                <td>Pump Design Load</td>
+                                <td>\( P_{design} \)</td>
+                                <td>5.0</td>
+                                <td>MW</td>
+                            </tr>
+                            <tr>
+                                <td>Turbine Efficiency</td>
+                                <td>\( \eta_{turb} \)</td>
+                                <td>92</td>
+                                <td>%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>2. Complete Physics Engine (The Code's Math)</h2>
+                <p>The AI optimization is grounded entirely in these interconnected thermodynamic and hydraulic laws
+                    programmed into the MATLAB digital twin.</p>
+
+                <h3>2.1 Turbine Power Output (Enthalpy Drop)</h3>
+                <div class="equation-box">
+                    \[ W_{turb} = \dot{m}_{steam} \times (h_{in} - h_{out}) \times \eta_{turb} \]
+                    <div class="explanation"><span class="why-use">Why we used it:</span> To calculate the gross
+                        electricity produced by the turbine. The AI monitors the enthalpy (\(h_{out}\)) using the
+                        <strong>XSteam</strong> library. If condenser pressure rises, the turbine produces less power.
+                    </div>
+                </div>
+
+                <h3>2.2 Pump Affinity Law (The Savings Engine)</h3>
+                <div class="equation-box">
+                    \[ P_{pump} = P_{design} \times \left( \frac{\text{Speed}}{100} \right)^{3} \]
+                    <div class="explanation"><span class="why-use">Why we used it:</span> This is the core logic.
+                        Because power relates to the <strong>cube</strong> of the speed, reducing pump speed slightly
+                        results in massive power savings.</div>
+                </div>
+
+                <h3>2.3 Condenser Heat Transfer (LMTD)</h3>
+                <div class="equation-box">
+                    \[ Q_{cond} = U \cdot A \cdot \left[ \frac{(T_{sat} - T_{in}) - (T_{sat} -
+                    T_{out})}{\ln\left(\frac{T_{sat} - T_{in}}{T_{sat} - T_{out}}\right)} \right] \]
+                    <div class="explanation"><span class="why-use">Why we used it:</span> To simulate condenser physics.
+                        The AI uses this loop to predict the saturation temperature (\(T_{sat}\)) and the resulting
+                        backpressure based on the sea temperature.</div>
+                </div>
+
+                <h3>2.4 Thermal Energy Balance</h3>
+                <div class="equation-box">
+                    \[ Q_{cond} = \dot{m}_{sw} \cdot C_{p,sw} \cdot (T_{out} - T_{in}) \]
+                    <div class="explanation"><span class="why-use">Why we used it:</span> To ensure the law of
+                        conservation of energy is met. It links the mass flow of the cooling water to the temperature
+                        rise of the seawater.</div>
+                </div>
+
+                <h3>2.5 The Ultimate Objective (Fitness Function)</h3>
+                <div class="equation-box">
+                    \[ W_{net} = W_{turb} - P_{pump} \quad \rightarrow \quad \text{Maximize!} \]
+                    <div class="explanation"><span class="why-use">Why we used it:</span> This is the single equation
+                        the Genetic Algorithm is trying to maximize. It finds the perfect balance between losing turbine
+                        power and gaining saved pump power.</div>
+                </div>
+            </section>
+
+            <section class="card">
+                <span class="badge">Critical Safety Constraints</span>
+                <h2>3. Nuclear Operating Limits</h2>
+                <ul>
+                    <li><strong>Vacuum Limit:</strong> \( P_{cond} \le 0.10 \text{ bar} \) (Prevents turbine trip).</li>
+                    <li><strong>Ecosystem Limit:</strong> \( \Delta T_{sw} \le 15^\circ\text{C} \) (Protects marine
+                        life).</li>
+                    <li><strong>Hydraulic Limit:</strong> \( \text{Speed} \ge 50\% \) (Prevents pump stall).</li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <h2>4. Project Impact (Before vs. After Optimization)</h2>
+                <div class="table-responsive">
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Old Method (100%)</th>
+                                <th>AI Optimized (NUPS)</th>
+                                <th>Impact & Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Pump Speed</strong></td>
+                                <td>100%</td>
+                                <td class="gain">82.1%</td>
+                                <td>AI deliberately slowed the pump.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Auxiliary Load</strong></td>
+                                <td>5.0 MW</td>
+                                <td class="gain">3.1 MW</td>
+                                <td><strong>1.9 MW</strong> of electricity saved.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Turbine Output</strong></td>
+                                <td>85.0 MW</td>
+                                <td class="loss">84.5 MW</td>
+                                <td>Lost 0.5 MW due to higher pressure.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Net Generation</strong></td>
+                                <td>80.0 MW</td>
+                                <td class="gain">81.4 MW</td>
+                                <td><strong>+1.4 MW Pure Profit</strong>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="card download-section">
+                <h2>📥 Download Project Source Code</h2>
+                <p>You can download the MATLAB files directly to run the NUPS Digital Twin on your local machine:</p>
+                <div>
+                    <a href="PWR_Dashboard_exported.m" download class="download-btn">🖥️ Main Dashboard (.m)</a>
+                    <a href="Plant_Physics.m" download class="download-btn">⚙️ Plant Physics (.m)</a>
+                    <a href="Run_Optimization.m" download class="download-btn">🧠 GA Optimizer (.m)</a>
+                    <a href="XSteam.m" download class="download-btn">💧 XSteam Library</a>
+                </div>
+            </section>
+        </div>
+
+        <div id="content-ar" style="display:none;" dir="rtl">
+            <header>
+                <h1>نظام NUPS: تحسين الطاقة المساعدة لمفاعل NuScale</h1>
+                <div class="subtitle">إدارة دورة رانكن بالذكاء الاصطناعي (الخوارزميات الجينية)</div>
+                <p>الفريق: أحمد الغامدي، فيصل باحدي، أحمد الصلاحي | إشراف: د. أنس الوافي</p>
+            </header>
+
+            <div class="story-card">
+                <h2>نظرة عامة (فكرة المشروع ببساطة)</h2>
+                <p>في محطات الطاقة النووية، تعمل مضخات عملاقة لسحب مياه البحر لتبريد البخار. تقليدياً، تعمل هذه المضخات
+                    بأقصى سرعة (100%) طوال الوقت، مما يستهلك كميات هائلة من الكهرباء التي تنتجها المحطة.</p>
+                <p><strong>الحل الذي قدمناه:</strong> قمنا ببرمجة ذكاء اصطناعي يعمل كـ "مشغل ذكي". يقوم النظام بحساب
+                    كمية التبريد المطلوبة بدقة بناءً على حرارة البحر. ومن خلال خفض سرعة المضخات بذكاء دون الإضرار بسلامة
+                    المفاعل، توفر المحطة "ميجاواطات" من الطاقة، مما يزيد من صافي الكهرباء التي يتم تصديرها للمدينة.</p>
+            </div>
+
+            <section class="card">
+                <h2>1. ثوابت النظام (مفاعل NuScale 250 MWt)</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>المتغير</th>
+                                <th>الرمز</th>
+                                <th>القيمة</th>
+                                <th>الوحدة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>القدرة الحرارية للمفاعل</td>
+                                <td>\( Q_{reactor} \)</td>
+                                <td>250</td>
+                                <td>MWt</td>
+                            </tr>
+                            <tr>
+                                <td>ضغط البخار الرئيسي</td>
+                                <td>\( P_{in} \)</td>
+                                <td>60</td>
+                                <td>bar</td>
+                            </tr>
+                            <tr>
+                                <td>درجة حرارة البخار</td>
+                                <td>\( T_{in} \)</td>
+                                <td>275</td>
+                                <td>°C</td>
+                            </tr>
+                            <tr>
+                                <td>مساحة سطح المكثف</td>
+                                <td>\( Area \)</td>
+                                <td>4500</td>
+                                <td>m²</td>
+                            </tr>
+                            <tr>
+                                <td>الاستهلاك التصميمي للمضخة</td>
+                                <td>\( P_{design} \)</td>
+                                <td>5.0</td>
+                                <td>MW</td>
+                            </tr>
+                            <tr>
+                                <td>كفاءة التوربين</td>
+                                <td>\( \eta_{turb} \)</td>
+                                <td>92</td>
+                                <td>%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>2. المحرك الفيزيائي الكامل (قوانين الكود الأساسية)</h2>
+                <p>الذكاء الاصطناعي في مشروعنا لا يعمل بعشوائية؛ بل يعتمد على هذه القوانين الفيزيائية المبرمجة بالكامل
+                    داخل التوأم الرقمي (MATLAB).</p>
+
+                <h3>2.1 شغل التوربين (فرق الإنثالبي)</h3>
+                <div class="equation-box" dir="ltr">
+                    \[ W_{turb} = \dot{m}_{steam} \times (h_{in} - h_{out}) \times \eta_{turb} \]
+                </div>
+                <div class="explanation"><span class="why-use">لماذا استخدمناه؟</span> لحساب إجمالي الكهرباء المنتجة من
+                    التوربين. يقوم الذكاء الاصطناعي بمراقبة الإنثالبي عبر مكتبة <strong>XSteam</strong>. إذا ارتفع ضغط
+                    المكثف، يقل إنتاج التوربين.</div>
+
+                <h3>2.2 قانون التناسب للمضخات (محرك التوفير)</h3>
+                <div class="equation-box" dir="ltr">
+                    \[ P_{pump} = P_{design} \times \left( \frac{\text{Speed}}{100} \right)^{3} \]
+                </div>
+                <div class="explanation"><span class="why-use">لماذا استخدمناه؟</span> لأن استهلاك الطاقة يرتبط بـ
+                    <strong>مكعب</strong> السرعة، فإن خفض سرعة المضخة بنسبة بسيطة يؤدي لتوفير هائل في الطاقة.</div>
+
+                <h3>2.3 انتقال الحرارة في المكثف (LMTD)</h3>
+                <div class="equation-box" dir="ltr">
+                    \[ Q_{cond} = U \cdot A \cdot \left[ \frac{(T_{sat} - T_{in}) - (T_{sat} -
+                    T_{out})}{\ln\left(\frac{T_{sat} - T_{in}}{T_{sat} - T_{out}}\right)} \right] \]
+                </div>
+                <div class="explanation"><span class="why-use">لماذا استخدمناه؟</span> لمحاكاة فيزياء المكثف والتنبؤ
+                    بضغط التشبع (\(T_{sat}\)) بناءً على درجة حرارة مياه البحر.</div>
+
+                <h3>2.4 توازن الطاقة الحرارية</h3>
+                <div class="equation-box" dir="ltr">
+                    \[ Q_{cond} = \dot{m}_{sw} \cdot C_{p,sw} \cdot (T_{out} - T_{in}) \]
+                </div>
+                <div class="explanation"><span class="why-use">لماذا استخدمناه؟</span> لضمان تطبيق قانون حفظ الطاقة بين
+                    التدفق ومقدار ارتفاع حرارة مياه البحر.</div>
+
+                <h3>2.5 الهدف النهائي (دالة اللياقة - Fitness Function)</h3>
+                <div class="equation-box" dir="ltr">
+                    \[ W_{net} = W_{turb} - P_{pump} \quad \rightarrow \quad \text{Maximize!} \]
+                </div>
+                <div class="explanation"><span class="why-use">لماذا استخدمناه؟</span> هذه هي المعادلة التي يسعى الذكاء
+                    الاصطناعي لتعظيم مخرجاتها. التوازن المثالي بين خسارة التوربين ومكاسب توفير المضخات.</div>
+            </section>
+
+            <section class="card">
+                <span class="badge">قيود السلامة النووية</span>
+                <h2>3. حدود التشغيل الآمن</h2>
+                <ul>
+                    <li><strong>حماية الفراغ:</strong> \( P_{cond} \le 0.10 \text{ bar} \) (لمنع توقف التوربين المفاجئ).
+                    </li>
+                    <li><strong>الحماية البيئية:</strong> \( \Delta T_{sw} \le 15^\circ\text{C} \) (لحماية الكائنات
+                        البحرية).</li>
+                    <li><strong>استقرار التدفق:</strong> \( \text{Speed} \ge 50\% \) (لمنع توقف المضخات وركود المياه).
+                    </li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <h2>4. أثر المشروع (مقارنة قبل وبعد التحسين)</h2>
+                <div class="table-responsive">
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>المعيار</th>
+                                <th>التشغيل القديم (100%)</th>
+                                <th>التشغيل الذكي (NUPS)</th>
+                                <th>التأثير والمعنى</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>سرعة المضخة</strong></td>
+                                <td>100%</td>
+                                <td class="gain">82.1%</td>
+                                <td>الذكاء الاصطناعي أبطأ المضخة بذكاء.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>استهلاك المضخات</strong></td>
+                                <td>5.0 MW</td>
+                                <td class="gain">3.1 MW</td>
+                                <td>تم <strong>توفير 1.9 MW</strong> من الكهرباء.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>إنتاج التوربين</strong></td>
+                                <td>85.0 MW</td>
+                                <td class="loss">84.5 MW</td>
+                                <td>خسارة 0.5 MW بسبب ارتفاع الضغط.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>صافي التوليد الكلي</strong></td>
+                                <td>80.0 MW</td>
+                                <td class="gain">81.4 MW</td>
+                                <td><strong>+1.4 MW ربح صافي</strong>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="card download-section">
+                <h2>📥 تحميل ملفات المشروع (Source Code)</h2>
+                <p>يمكنك تحميل الأكواد البرمجية (MATLAB) لتشغيل التوأم الرقمي على جهازك الشخصي:</p>
+                <div>
+                    <a href="PWR_Dashboard_exported.m" download class="download-btn">🖥️ واجهة التحكم (.m)</a>
+                    <a href="Plant_Physics.m" download class="download-btn">⚙️ المحرك الفيزيائي (.m)</a>
+                    <a href="Run_Optimization.m" download class="download-btn">🧠 خوارزمية AI (.m)</a>
+                    <a href="XSteam.m" download class="download-btn">💧 مكتبة XSteam</a>
+                </div>
+            </section>
+        </div>
+
+        <div class="footer">
+            KAU Nuclear Engineering Department - Senior Project &copy; 2026
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+        }
+
+        function toggleLanguage() {
+            const en = document.getElementById('content-en');
+            const ar = document.getElementById('content-ar');
+            const btn = document.getElementById('langBtn');
+            const body = document.getElementById('mainBody');
+
+            if (en.style.display === 'none') {
+                en.style.display = 'block'; ar.style.display = 'none';
+                btn.innerText = '🇸🇦 Arabic'; body.dir = 'ltr';
+                MathJax.typeset();
+            } else {
+                en.style.display = 'none'; ar.style.display = 'block';
+                btn.innerText = '🇺🇸 English'; body.dir = 'rtl';
+                MathJax.typeset();
+            }
+        }
+    </script>
+</body>
+
+</html>
