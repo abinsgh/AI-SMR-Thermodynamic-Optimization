@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* تنسيق الصفحة والزر */
+        body {
+            /* استخدم الصورة الخلفية إذا كانت موجودة، وإلا فاللون الشفاف */
+            background-color: transparent;
+            background-image: url('ButtonBG.png'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+
+        button {
+            width: 9em;
+            height: 3em;
+            border-radius: 30em;
+            font-size: 15px;
+            font-family: inherit;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            color: #333;
+            font-weight: bold;
+        }
+
+        button::before {
+            content: '';
+            width: 0;
+            height: 3em;
+            border-radius: 30em;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-image: linear-gradient(to right, #0fd850 0%, #f9f047 100%);
+            transition: .5s ease;
+            display: block;
+            z-index: -1;
+        }
+
+        button:hover::before {
+            width: 9em;
+        }
+    </style>
+</head>
+<body>
+
+    <button onclick="sendToMatlab()">
+        START SYSTEM
+    </button>
+
+    <script type="text/javascript">
+        function setup(htmlComponent) {
+            window.htmlComponent = htmlComponent;
+        }
+
+        function sendToMatlab() {
+            // هذا هو الجزء الذي كان يرسل الفراغ سابقاً
+            if (window.htmlComponent) {
+                // نرسل كلمة Start صريحة للماتلاب
+                window.htmlComponent.Data = "Start";
+            }
+        }
+    </script>
+</body>
+</html>
