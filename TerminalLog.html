@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* --- التعديل هنا: جعلنا الخلفية بيضاء تماماً --- */
+        body {
+            background-color: #ffffff; /* أبيض ناصع بدلاً من شفاف */
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100%;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- تصميم الكارد (التيرمينال نفسه) --- */
+        .card {
+          padding: 0.5rem; 
+          width: 96%;      /* عرض مناسب */
+          height: 94%;     /* ارتفاع مناسب */
+          overflow: hidden;
+          border: 0.25px solid #c5c5c5;
+          border-radius: 20px;
+          
+          /* لون التيرمينال الداخلي (أزرق غامق/كحلي) */
+          background-color: rgba(0, 0, 128, 0.95); 
+          
+          /* التوهج حول التيرمينال */
+          box-shadow: 0 0 30px 5px rgba(0, 0, 255, 0.3);
+          
+          display: flex;
+          flex-direction: column;
+        }
+
+        .wrap {
+          display: flex;
+          flex-direction: column;
+          gap: 0;
+          position: relative;
+          z-index: 10;
+          border: 0.5px solid #525252;
+          border-radius: 10px;
+          overflow: hidden;
+          height: 100%; 
+          background-color: black;
+        }
+
+        .terminal {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        }
+
+        .head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          overflow: hidden;
+          min-height: 35px;
+          padding-inline: 12px;
+          background-color: #202425;
+          border-bottom: 1px solid #333;
+        }
+
+        .title {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-weight: 600;
+          color: #8e8e8e;
+          font-size: 0.9rem;
+        }
+
+        .title > svg {
+          height: 16px;
+          width: 16px;
+          color: #006adc;
+        }
+
+        .copy_toggle {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0.3rem;
+          border: 0.65px solid darkgrey;
+          border-radius: 6px;
+          background-color: #202425;
+          color: #8e8e8e;
+          cursor: pointer;
+          width: 25px;
+          height: 25px;
+        }
+
+        /* منطقة السجلات */
+        .body {
+          display: flex;
+          flex-direction: column;
+          padding: 1rem;
+          line-height: 20px;
+          color: white;
+          background-color: #0d0d0d; 
+          overflow-y: auto; 
+          flex-grow: 1;
+          font-size: 14px;
+        }
+        
+        /* إخفاء شريط التمرير */
+        .body::-webkit-scrollbar {
+            width: 8px;
+        }
+        .body::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 4px;
+        }
+
+        .log-line {
+            margin-bottom: 5px;
+            animation: fadeIn 0.3s ease-in;
+            word-wrap: break-word;
+        }
+
+        .prefix {
+            color: #e34ba9; /* الوردي */
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        
+        .msg-text {
+            color: #ccc;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background-color: #e34ba9;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="wrap">
+    <div class="terminal">
+      <hgroup class="head">
+        <p class="title">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 15L10 12L7 9M13 15H17M7.8 21H16.2C17.88 21 18.72 21 19.36 20.67C20.67 20 21 18.72 21 16.2V7.8C21 6.11 21 5.27 20.67 4.63C20 3.32 18.72 3 16.2 3H7.8C6.11 3 5.27 3 4.63 3.32C3.32 4 3 5.27 3 7.8V16.2C3 18.72 3 20 4.63 20.67C5.27 21 6.11 21 7.8 21Z"></path>
+          </svg>
+          AI_Kernel_Log
+        </p>
+        <button class="copy_toggle" onclick="clearLog()">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="14" height="14">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+        </button>
+      </hgroup>
+
+      <div class="body" id="logContainer">
+        <div class="log-line">
+            <span class="prefix">root@AI:~$</span>
+            <span class="msg-text">System initialized...</span>
+        </div>
+        <div id="cursorLine">
+            <span class="prefix">>></span><span class="cursor"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    function setup(htmlComponent) {
+        window.htmlComponent = htmlComponent;
+    }
+
+    function addLog(msg) {
+        var container = document.getElementById('logContainer');
+        var cursorLine = document.getElementById('cursorLine');
+        
+        var newLine = document.createElement('div');
+        newLine.className = 'log-line';
+        newLine.innerHTML = `<span class="prefix">➜</span> <span class="msg-text">${msg}</span>`;
+        
+        container.insertBefore(newLine, cursorLine);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function clearLog() {
+         var container = document.getElementById('logContainer');
+         var cursorLine = document.getElementById('cursorLine');
+         container.innerHTML = '';
+         container.appendChild(cursorLine);
+    }
+
+    setInterval(function() {
+        if (window.htmlComponent && window.htmlComponent.Data !== "") {
+            var msg = window.htmlComponent.Data;
+            addLog(msg);
+            window.htmlComponent.Data = ""; 
+        }
+    }, 100);
+</script>
+
+</body>
+</html>
