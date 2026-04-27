@@ -132,6 +132,17 @@
 
         .badge { background: var(--danger); color: white; padding: 5px 12px; border-radius: 5px; font-size: 0.85rem; font-weight: bold; }
 
+        /* Dashboard Images Style */
+        .dashboard-img {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            display: block;
+        }
+
         /* Master Download Button Style */
         .download-section { text-align: center; padding: 20px; }
         .download-btn {
@@ -265,6 +276,22 @@
                 </div>
             </section>
 
+            <section class="card">
+                <h2>5. System Interfaces & Dashboards</h2>
+                
+                <h3>5.1 System Initialization Interface</h3>
+                <img src="library/image_a28598.png" alt="System Initialization Interface" class="dashboard-img">
+                <div class="explanation"><strong>Figure 1:</strong> The landing screen of the NuScale SMR Intelligent System. To begin the simulation, the operator must define the computational depth by inputting the desired number of generations for the Genetic Algorithm (e.g., 30). Once the parameter is set, clicking the <strong>START SYSTEM</strong> button initializes the thermodynamic physics engine and launches the AI optimization process.</div>
+
+                <h3>5.2 Interactive Operational Dashboard</h3>
+                <img src="library/image_a2331e.png" alt="Interactive Operational Dashboard" class="dashboard-img">
+                <div class="explanation"><strong>Figure 2:</strong> The primary monitoring and control interface displaying real-time AI optimization results. Operators can simulate seasonal variations using the interactive Sea Water Temperature slider (shown here at 20.0°C) to observe dynamic system responses. The interface features four analytical plots illustrating the global optimization strategy across the entire temperature spectrum. The left panel provides instant numeric telemetry for key performance indicators, while the embedded <strong>AI_Kernel_Log</strong> terminal delivers a comprehensive thermodynamic breakdown, including condenser pressure safety margins, net power gain, and real-time economic savings.</div>
+
+                <h3>5.3 Genetic Algorithm Convergence Analytics</h3>
+                <img src="library/image_a232a5.png" alt="Genetic Algorithm Convergence Analytics" class="dashboard-img">
+                <div class="explanation"><strong>Figure 3:</strong> The AI Analysis tab provides a transparent, deep dive into the Genetic Algorithm's execution. This interface visualizes the evolutionary optimization process, featuring a convergence plot (Fitness Value vs. Generation) that demonstrates the algorithm minimizing the cost function over time. The "Solution Space Search" maps the final optimal control variables (Pump Speed and MSR Valve position). The panel also displays the configured GA hyperparameters and includes a live execution log that tracks generation-by-generation fitness scores until mathematical convergence is achieved.</div>
+            </section>
+
             <section class="card download-section">
                 <h2>📥 Download Project Source Code</h2>
                 <p>Get the complete NUPS Digital Twin package (MATLAB scripts, Physics Engine, AI Optimizer, and HTML Report) in one click:</p>
@@ -364,6 +391,22 @@
                         </tbody>
                     </table>
                 </div>
+            </section>
+
+            <section class="card">
+                <h2>5. واجهات النظام ولوحات التحكم</h2>
+                
+                <h3>5.1 واجهة تهيئة النظام (System Initialization)</h3>
+                <img src="library/image_a28598.png" alt="واجهة تهيئة النظام" class="dashboard-img">
+                <div class="explanation"><strong>الشكل 1:</strong> الشاشة الرئيسية لنظام NuScale الذكي. لبدء المحاكاة، يحدد المشغل عمق العمليات الحسابية بإدخال عدد الأجيال المطلوبة للخوارزمية الجينية (مثلاً 30). عند الضغط على زر <strong>START SYSTEM</strong>، يتم تفعيل المحرك الفيزيائي الديناميكي الحراري وتبدأ عملية التحسين بالذكاء الاصطناعي.</div>
+
+                <h3>5.2 لوحة التحكم التشغيلية التفاعلية (Smart Dashboard)</h3>
+                <img src="library/image_a2331e.png" alt="لوحة التحكم التشغيلية التفاعلية" class="dashboard-img">
+                <div class="explanation"><strong>الشكل 2:</strong> واجهة المراقبة والتحكم الرئيسية التي تعرض نتائج التحسين اللحظية. يمكن للمشغل محاكاة التغيرات الموسمية باستخدام مؤشر حرارة مياه البحر (موضح هنا عند 20.0°C). تحتوي الواجهة على أربعة رسومات بيانية توضح استراتيجية التحسين عبر مختلف درجات الحرارة. كما تعرض اللوحة الجانبية قراءات دقيقة ومباشرة لمؤشرات الأداء، بينما توفر شاشة <strong>AI_Kernel_Log</strong> تحليلاً ديناميكياً حرارياً شاملاً، يتضمن هوامش أمان ضغط المكثف، ومقدار الطاقة المكتسبة، والتوفير الاقتصادي اللحظي.</div>
+
+                <h3>5.3 تحليلات تقارب الخوارزمية الجينية (GA Analytics)</h3>
+                <img src="library/image_a232a5.png" alt="تحليلات تقارب الخوارزمية الجينية" class="dashboard-img">
+                <div class="explanation"><strong>الشكل 3:</strong> توفر نافذة تحليل الذكاء الاصطناعي نظرة عميقة وشفافة لآلية عمل الخوارزمية الجينية. تعرض هذه الواجهة مسار التحسين التطوري، مع رسم بياني للتقارب يوضح كيف تقلل الخوارزمية من دالة التكلفة بمرور الوقت. كما توضح "خريطة البحث" المتغيرات النهائية المثلى (سرعة المضخة وفتحة صمام MSR). تعرض اللوحة أيضاً إعدادات الخوارزمية وسجلاً حياً يتتبع تطور اللياقة جيلاً بعد جيل حتى الوصول إلى التقارب الرياضي التام.</div>
             </section>
 
             <section class="card download-section">
