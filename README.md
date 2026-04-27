@@ -15,7 +15,7 @@
 ---
 
 ## 📖 Project Vision
-In the extreme heat of the Arabian Gulf, nuclear power plant efficiency can drop significantly due to high seawater temperatures. This project introduces an **AI-Powered Digital Twin** for a **250 MW NuScale SMR (Small Modular Reactor)**, utilizing advanced Genetic Algorithms to optimize the Rankine Cycle thermodynamics in real-time.
+In the extreme heat of the Arabian Gulf, nuclear power plant efficiency can drop significantly due to high seawater temperatures. This project introduces an **AI-Powered Digital Twin** for a **250[...]
 
 ---
 
@@ -142,8 +142,8 @@ This will execute the GA and save optimized control parameters.
 
 ### 4. **Comparing Optimization Results**
    - Two parallel displays show:
-     - **Left Panel:** Traditional fixed-parameter operation
-     - **Right Panel:** AI-optimized dynamic control
+      - **Left Panel:** Traditional fixed-parameter operation
+      - **Right Panel:** AI-optimized dynamic control
    - Compare efficiency gains and constraint satisfaction
 
 ### 5. **Saving Results**
@@ -178,6 +178,25 @@ Genetic Algorithm optimization:
 Open-source steam properties calculator:
 - Calculates thermodynamic properties across operating ranges
 - Essential for accurate plant modeling
+
+---
+
+## 💻 System Interfaces & Dashboards
+
+### 1. System Initialization Interface
+![System Initialization Interface](Library/Figure1.png)
+
+**Figure 1:** The landing screen of the NuScale SMR Intelligent System. To begin the simulation, the operator must define the computational depth by inputting the desired number of generations for the Genetic Algorithm (e.g., 30). Once the parameter is set, clicking the **START SYSTEM** button initializes the thermodynamic physics engine and launches the AI optimization process.
+
+### 2. Interactive Operational Dashboard
+![Interactive Operational Dashboard](Library/Figure2.png)
+
+**Figure 2:** The primary monitoring and control interface displaying real-time AI optimization results. Operators can simulate seasonal variations using the interactive Sea Water Temperature slider (shown here at 20.0°C) to observe dynamic system responses. The interface features four analytical plots illustrating the global optimization strategy across the entire temperature spectrum. The left panel provides instant numeric telemetry for key performance indicators, while the embedded **AI_Kernel_Log** terminal delivers a comprehensive thermodynamic breakdown, including condenser pressure safety margins, net power gain, and real-time economic savings.
+
+### 3. Genetic Algorithm Convergence Analytics
+![Genetic Algorithm Convergence Analytics](Library/Figure3.png)
+
+**Figure 3:** The AI Analysis tab provides a transparent, deep dive into the Genetic Algorithm's execution. This interface visualizes the evolutionary optimization process, featuring a convergence plot (Fitness Value vs. Generation) that demonstrates the algorithm minimizing the cost function over time. The "Solution Space Search" maps the final optimal control variables (Pump Speed and MSR Valve position). The panel also displays the configured GA hyperparameters and includes a live execution log that tracks generation-by-generation fitness scores until mathematical convergence is achieved.
 
 ---
 
